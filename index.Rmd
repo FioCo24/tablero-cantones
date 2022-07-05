@@ -15,6 +15,10 @@ library(flexdashboard)
 library(dplyr)
 library(sf)
 library(leaflet)
+library(DT)
+library(readr)
+library(ggplot2)
+library(plotly)
 
 ```
 
@@ -48,12 +52,36 @@ Column {data-width=500}
 ### Chart B
 
 ```{r}
+# Transformación de datos de cantones
+cantones <-
+  cantones %>%
+  select(provincia, canton, area)
+
+# Visualización de datos de cantones en formato tabular
+cantones %>%
+  st_drop_geometry() %>%
+  datatable(options = list(
+    pageLength = 5,
+    language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')
+  ))
 
 ```
 
 ### Chart C
 
 ```{r}
+
+# ggplotly - Gráfico de barras simples 
+cantones_barras <-
+  cantones %>%
+  slice_max(area, n = 8) %>% 
+  ggplot(aes(x = reorder(canton, area), y = area)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Cantones por área") +
+  xlab("Cantón") +
+  ylab("Área") 
+
+ggplotly(cantones_barras) %>% config(locale = 'es')
 
 ```
 
