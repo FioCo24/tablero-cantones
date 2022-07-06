@@ -46,10 +46,7 @@ leaflet() %>%
 
 ```
 
-Column {data-width=500}
------------------------------------------------------------------------
-
-### Chart B
+### Tabla de Cantones
 
 ```{r}
 # Transformación de datos de cantones
@@ -67,7 +64,11 @@ cantones %>%
 
 ```
 
-### Chart C
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Gráfico de Cantones
 
 ```{r}
 
@@ -75,7 +76,7 @@ cantones %>%
 cantones_barras <-
   cantones %>%
   slice_max(area, n = 8) %>% 
-  ggplot(aes(x = reorder(canton, area), y = area)) +
+  ggplot(aes(x = reorder(canton, -area), y = area)) +
   geom_bar(stat = "identity") +
   ggtitle("Cantones por área") +
   xlab("Cantón") +
